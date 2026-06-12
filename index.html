@@ -106,7 +106,7 @@
   <button class="filter-btn" data-filtro="agenda" data-grupo="tipo">🗓 Agenda papal</button>
   <button class="filter-btn" data-filtro="total" data-grupo="tipo">🔴 Cierre total</button>
   <button class="filter-btn" data-filtro="parcial" data-grupo="tipo">🟠 Corte parcial</button>
-  <button class="filter-btn" data-filtro="parking" data-grupo="tipo">🔵 Aparcamiento</button>
+
 </div>
 
 <div class="contador" id="contador"></div>
@@ -130,20 +130,7 @@ const puntos = [
     detalle: "Cierre total desde las 24:00 h del día 4. Afecta a Recoletos, Alcalá hasta Independencia y Prado sentido norte.",
     lat: 40.4195, lng: -3.6922
   },
-  {
-    dia: "prev", fecha: "5–7 jun", tipo: "parking",
-    nombre: "Reservas SEA inhabilitadas — todo el municipio",
-    zona: "Todo el municipio de Madrid",
-    detalle: "Todas las reservas SEA del municipio inhabilitadas. Residentes AER con movilidad ampliada a cualquier barrio del AER.",
-    lat: 40.4168, lng: -3.7038
-  },
-  {
-    dia: "prev", fecha: "5–6 jun", tipo: "parking",
-    nombre: "Zonas ORA afectadas",
-    zona: "Centro, Retiro, Salamanca, Chamartín, Tetuán, Chamberí",
-    detalle: "Distritos con ORA afectada: Centro (Justicia, Cortes), Retiro (Jerónimos), Salamanca (Recoletos, Castellana), Chamartín (El Viso, Hispanoamérica, Nueva España), Tetuán (Cuatro Caminos, Castillejos), Chamberí (Ríos Rosas, Almagro).",
-    lat: 40.4260, lng: -3.6800
-  },
+
 
   // ── SÁBADO 6 JUN — cortes ────────────────────────────
   {
@@ -339,7 +326,7 @@ const config = {
   agenda:  { pin: "#1D9E75", badgeBg: "#E1F5EE", badgeColor: "#085041", label: "Agenda papal" },
   total:   { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Cierre total" },
   parcial: { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte parcial" },
-  parking: { pin: "#378ADD", badgeBg: "#E6F1FB", badgeColor: "#0C447C", label: "Aparcamiento" }
+
 };
 
 let filtroDia = "todos";
@@ -415,7 +402,7 @@ legend.onAdd = () => {
     <div class="legend-sep"></div>
     <div class="legend-item"><span class="dot" style="background:#E24B4A"></span> Cierre total</div>
     <div class="legend-item"><span class="dot" style="background:#BA7517"></span> Corte parcial</div>
-    <div class="legend-item"><span class="dot" style="background:#378ADD"></span> Aparcamiento</div>
+
   `;
   return div;
 };
