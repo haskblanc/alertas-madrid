@@ -31,6 +31,7 @@
       padding: 7px 20px;
       font-size: 12px;
       color: #633806;
+      line-height: 1.4;
     }
 
     .toolbar {
@@ -59,7 +60,7 @@
 
     .contador { font-size: 11px; color: #999; padding: 5px 20px; background: #fff; border-bottom: 1px solid #e5e5e5; }
 
-    #map { width: 100%; height: calc(100vh - 168px); }
+    #map { width: 100%; height: calc(100vh - 190px); }
 
     .legend {
       background: #fff;
@@ -75,7 +76,7 @@
     .legend-sep { border-top: 1px solid #eee; margin: 4px 0; }
 
     .leaflet-popup-content-wrapper { border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border: 1px solid #e5e5e5; }
-    .leaflet-popup-content { min-width: 230px; margin: 13px 15px; }
+    .leaflet-popup-content { min-width: 250px; margin: 13px 15px; }
     .popup-fecha { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
     .popup-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #1a1a1a; line-height: 1.3; }
     .popup-meta { font-size: 12px; color: #555; margin-bottom: 3px; line-height: 1.5; }
@@ -94,7 +95,7 @@
 </header>
 
 <div class="aviso">
-  ⚠️ <strong>Dom 7 jun:</strong> mayor impacto en movilidad. Metro reforzado al 125%. EMT gratuita los días 6 y 7 jun.
+  ⚠️ <strong>TRANSPORTE PÚBLICO:</strong> EMT gratuita (6 y 7 jun) y servicios especiales (C1, C2, Aeropuerto). <strong>Bicimad:</strong> desplazamientos de 30 min gratuitos. <strong>Metro cerrado</strong> hasta las 02:30h del 9 de junio en: <strong>L2</strong> (Retiro, Banco de España, Sevilla), <strong>L4</strong> (Velázquez, Serrano, Colón) y <strong>L5</strong> (Chueca).
 </div>
 
 <div class="toolbar">
@@ -109,7 +110,7 @@
   <button class="filter-btn" data-filtro="agenda" data-grupo="tipo">🗓 Agenda papal</button>
   <button class="filter-btn" data-filtro="total" data-grupo="tipo">🔴 Cierre total</button>
   <button class="filter-btn" data-filtro="parcial" data-grupo="tipo">🟠 Corte parcial</button>
-
+  <button class="filter-btn" data-filtro="transporte" data-grupo="tipo">🚇 Transporte</button>
 </div>
 
 <div class="contador" id="contador"></div>
@@ -133,7 +134,6 @@ const puntos = [
     detalle: "Cierre total desde las 24:00 h del día 4. Afecta a Recoletos, Alcalá hasta Independencia y Prado sentido norte.",
     lat: 40.4195, lng: -3.6922
   },
-
 
   // ── SÁBADO 6 JUN — cortes ────────────────────────────
   {
@@ -184,7 +184,7 @@ const puntos = [
     dia: "sab", fecha: "Sáb 6 jun · 20:30h", tipo: "agenda",
     nombre: "Vigilia de oración con jóvenes — Plaza de Lima",
     zona: "Plaza de Lima, Paseo de la Castellana",
-    detalle: "Vigilia multitudinaria con jóvenes. ~800.000 asistentes. Usar metro: Santiago Bernabéu o Lima.",
+    detalle: "Vigilia multitudinaria con jóvenes. ~800.000 asistentes. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 001, 002, 1, 2, 3, 5, 7, 9, 10, 11, 12, 14, 15, 16, 19, 20, 21, 27, 28, 34, 37, 40, 43, 45, 46, 51, 52, 53, 61, 73, 74, 120, 126, 146, 147, 149, 150, C03, C1, C2, E1, S10 y Exprés Aeropuerto.",
     lat: 40.4528, lng: -3.6910
   },
 
@@ -193,21 +193,21 @@ const puntos = [
     dia: "dom", fecha: "Dom 7 jun — todo el día", tipo: "total",
     nombre: "Plaza de Cibeles — Cierre total jornada completa",
     zona: "Plaza de Cibeles y eje central",
-    detalle: "Mayor impacto en movilidad de los últimos años. ~1.000.000 asistentes a la misa (10:00 h).",
+    detalle: "Mayor impacto en movilidad de los últimos años. ~1.000.000 asistentes a la misa.",
     lat: 40.4195, lng: -3.6920
   },
   {
     dia: "dom", fecha: "Dom 7 jun — mañana", tipo: "total",
     nombre: "Paseo del Prado, Recoletos y Alcalá",
     zona: "Paseo del Prado, Recoletos, Alcalá",
-    detalle: "Cortes totales en vías de acceso a Cibeles. Procesión del Corpus Christi integrada en el recorrido.",
+    detalle: "Cortes totales en vías de acceso a Cibeles. Procesión del Corpus Christi integrada.",
     lat: 40.4138, lng: -3.6920
   },
   {
     dia: "dom", fecha: "Dom 7 jun — tarde", tipo: "parcial",
     nombre: "Entorno Movistar Arena",
     zona: "Av. de Felipe II — Movistar Arena",
-    detalle: "Perímetro de seguridad por evento 'Tejer redes con la Cultura, el Arte, la Economía y el Deporte' (18:00 h).",
+    detalle: "Perímetro de seguridad por evento a las 18:00 h.",
     lat: 40.4357, lng: -3.6613
   },
   {
@@ -223,7 +223,7 @@ const puntos = [
     dia: "dom", fecha: "Dom 7 jun · 10:00h", tipo: "agenda",
     nombre: "Santa Misa — Plaza de Cibeles",
     zona: "Plaza de Cibeles y entorno",
-    detalle: "Misa pontifical con procesión del Corpus Christi. Cortes totales en Cibeles y calles adyacentes.",
+    detalle: "Misa pontifical con procesión del Corpus Christi. Cortes totales. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 001, 002, 1, 2, 3, 5, 7, 9, 10, 12, 14, 15, 19, 20, 21, 27, 28, 34, 37, 40, 43, 45, 46, 51, 52, 53, 74, 120, 126, 146, 147, 149, 150, C1, C2, C03, E1, M3, S10 y Exprés Aeropuerto.",
     lat: 40.4197, lng: -3.6924
   },
   {
@@ -235,9 +235,9 @@ const puntos = [
   },
   {
     dia: "dom", fecha: "Dom 7 jun · 18:00h", tipo: "agenda",
-    nombre: "Acto cultural y deportivo — Movistar Arena",
-    zona: "Av. de Felipe II — Movistar Arena",
-    detalle: "Encuentro con el mundo de la cultura, el arte, la economía y el deporte.",
+    nombre: "Acto cultural y deportivo — Palacio de los Deportes",
+    zona: "Av. de Felipe II — Palacio de los Deportes",
+    detalle: "Encuentro con el mundo de la cultura, el arte, la economía y el deporte. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 30, C1, C2 y E4.",
     lat: 40.4359, lng: -3.6616
   },
 
@@ -246,37 +246,37 @@ const puntos = [
     dia: "lun", fecha: "Lun 8 jun — mañana", tipo: "parcial",
     nombre: "Congreso de los Diputados — perímetro",
     zona: "Carrera de San Jerónimo, s/n",
-    detalle: "Perímetro de seguridad para visita al Parlamento (10:30 h). Carrera de San Jerónimo y adyacentes afectadas.",
+    detalle: "Perímetro de seguridad para visita al Parlamento (10:30 h).",
     lat: 40.4157, lng: -3.6958
   },
   {
     dia: "lun", fecha: "Lun 8 jun — mañana", tipo: "parcial",
     nombre: "Conferencia Episcopal — perímetro",
     zona: "C/ Añastro, 1 — Ciudad Lineal",
-    detalle: "Restricciones por encuentro con los obispos (11:30 h). Calle Añastro y accesos limitados.",
+    detalle: "Restricciones por encuentro con los obispos (11:30 h).",
     lat: 40.4634, lng: -3.6695
   },
   {
     dia: "lun", fecha: "Lun 8 jun — tarde", tipo: "parcial",
     nombre: "Catedral de la Almudena — cierre perimetral",
     zona: "Catedral de la Almudena, C/ de Bailén",
-    detalle: "Cierre perimetral para oración y homenaje a la Virgen de la Almudena (18:00 h). Calle Bailén y entorno afectados.",
+    detalle: "Cierre perimetral para oración y ofrenda floral a la Virgen de la Almudena (18:00 h).",
     lat: 40.4153, lng: -3.7143
   },
   {
     dia: "lun", fecha: "Lun 8 jun — tarde-noche", tipo: "parcial",
     nombre: "Estadio Santiago Bernabéu — cortes accesos",
     zona: "Av. de Concha Espina, 1",
-    detalle: "Cortes por encuentro con la comunidad diocesana (19:00 h). Castellana norte y accesos al estadio cortados.",
+    detalle: "Cortes por encuentro diocesano (19:00 h).",
     lat: 40.4531, lng: -3.6883
   },
 
   // ── LUNES 8 JUN — agenda ─────────────────────────────
   {
     dia: "lun", fecha: "Lun 8 jun · 09:30h", tipo: "agenda",
-    nombre: "Reunión con el Presidente del Gobierno — Nunciatura",
-    zona: "Av. de Pío XII, 46 — Chamartín",
-    detalle: "Encuentro del Papa con Pedro Sánchez en la Nunciatura Apostólica.",
+    nombre: "Reunión con el Presidente del Gobierno",
+    zona: "Av. de Pío XII, 46 — Nunciatura",
+    detalle: "Encuentro del Papa en la Nunciatura Apostólica.",
     lat: 40.4622, lng: -3.6772
   },
   {
@@ -290,46 +290,97 @@ const puntos = [
     dia: "lun", fecha: "Lun 8 jun · 11:30h", tipo: "agenda",
     nombre: "Encuentro con Obispos — Conferencia Episcopal",
     zona: "C/ Añastro, 1 — Ciudad Lineal",
-    detalle: "Encuentro con los Obispos de España en la sede de la Conferencia Episcopal Española.",
+    detalle: "Encuentro con los Obispos de España.",
     lat: 40.4636, lng: -3.6698
   },
   {
     dia: "lun", fecha: "Lun 8 jun · 18:00h", tipo: "agenda",
-    nombre: "Oración a la Virgen de la Almudena — Catedral",
-    zona: "Catedral de la Almudena, C/ de Bailén",
-    detalle: "Oración y homenaje. Accesos restringidos en Calle Bailén y entorno de la Catedral.",
+    nombre: "Oración a la Virgen de la Almudena",
+    zona: "Catedral de la Almudena",
+    detalle: "Oración y ofrenda floral. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 3, 148 y M3.",
     lat: 40.4153, lng: -3.7141
   },
   {
     dia: "lun", fecha: "Lun 8 jun · 19:00h", tipo: "agenda",
-    nombre: "Encuentro diocesano — Estadio Santiago Bernabéu",
+    nombre: "Encuentro diocesano — Santiago Bernabéu",
     zona: "Av. de Concha Espina, 1",
-    detalle: "Encuentro multitudinario con la comunidad diocesana de Madrid.",
+    detalle: "Encuentro multitudinario con la comunidad. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 5, 14, 27, 40, 43, 120, 126, 147, 150 y S10.",
     lat: 40.4533, lng: -3.6880
   },
 
   // ── MARTES 9 JUN ─────────────────────────────────────
   {
+    dia: "mar", fecha: "Mar 9 jun · 10:20h", tipo: "agenda",
+    nombre: "Encuentro — IFEMA",
+    zona: "IFEMA Feria de Madrid",
+    detalle: "Encuentro programado en el recinto ferial. <br><br>🚌 <strong>Líneas EMT afectadas:</strong> 73, 112, 122 y SE709.",
+    lat: 40.4678, lng: -3.6169
+  },
+  {
     dia: "mar", fecha: "Mar 9 jun · 11:10h", tipo: "agenda",
-    nombre: "Salida hacia Barcelona — Aeropuerto Barajas",
+    nombre: "Salida hacia Barcelona — Aeropuerto",
     zona: "Aeropuerto Adolfo Suárez Madrid-Barajas",
-    detalle: "Salida del Papa hacia Barcelona. Levantamiento progresivo de todos los cortes desde ~12:00 h.",
+    detalle: "Salida del Papa. Levantamiento progresivo de cortes.",
     lat: 40.4614, lng: -3.5763
   },
   {
     dia: "mar", fecha: "Mar 9 jun — mañana", tipo: "parcial",
     nombre: "Levantamiento progresivo de cortes",
     zona: "Red viaria centro de Madrid",
-    detalle: "Normalización del tráfico desde ~12:00 h. Algunas vías pueden mantener restricciones residuales por desmontaje de estructuras.",
+    detalle: "Normalización del tráfico desde ~12:00 h.",
     lat: 40.4168, lng: -3.7040
+  },
+
+  // ── AFECCIONES METRO DE MADRID (Constantes hasta 9 jun) ──
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Retiro", zona: "Línea 2",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4205, lng: -3.6858
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación Banco de España", zona: "Línea 2",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4190, lng: -3.6953
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Sevilla", zona: "Línea 2",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4168, lng: -3.7001
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Velázquez", zona: "Línea 4",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4248, lng: -3.6826
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Serrano", zona: "Línea 4",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4258, lng: -3.6877
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Colón", zona: "Línea 4",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4260, lng: -3.6908
+  },
+  {
+    dia: "siempre", fecha: "Hasta 9 jun · 02:30h", tipo: "transporte",
+    nombre: "Cierre Estación de Chueca", zona: "Línea 5",
+    detalle: "Estación clausurada por motivos de seguridad.",
+    lat: 40.4225, lng: -3.6974
   }
 ];
 
 const config = {
-  agenda:  { pin: "#1D9E75", badgeBg: "#E1F5EE", badgeColor: "#085041", label: "Agenda papal" },
-  total:   { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Cierre total" },
-  parcial: { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte parcial" },
-
+  agenda:     { pin: "#1D9E75", badgeBg: "#E1F5EE", badgeColor: "#085041", label: "Agenda papal" },
+  total:      { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Cierre total" },
+  parcial:    { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte parcial" },
+  transporte: { pin: "#1A56DB", badgeBg: "#E1EBF5", badgeColor: "#0A2870", label: "Corte de Metro" }
 };
 
 let filtroDia = "todos";
@@ -339,6 +390,8 @@ function makeIcon(tipo) {
   const color = config[tipo].pin;
   const inner = tipo === "agenda"
     ? `<text x="15" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="${color}" font-family="sans-serif">✦</text>`
+    : tipo === "transporte"
+    ? `<text x="15" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="${color}" font-family="sans-serif">M</text>`
     : "";
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 30 40">
     <path d="M15 0C6.716 0 0 6.716 0 15c0 10 15 25 15 25S30 25 30 15C30 6.716 23.284 0 15 0z" fill="${color}"/>
@@ -359,7 +412,7 @@ function renderMarkers() {
   markers.forEach(m => map.removeLayer(m));
   markers = [];
   const filtrados = puntos.filter(p =>
-    (filtroDia === "todos" || p.dia === filtroDia) &&
+    (filtroDia === "todos" || p.dia === filtroDia || p.dia === "siempre") &&
     (filtroTipo === "todos" || p.tipo === filtroTipo)
   );
   const n = filtrados.length;
@@ -405,7 +458,7 @@ legend.onAdd = () => {
     <div class="legend-sep"></div>
     <div class="legend-item"><span class="dot" style="background:#E24B4A"></span> Cierre total</div>
     <div class="legend-item"><span class="dot" style="background:#BA7517"></span> Corte parcial</div>
-
+    <div class="legend-item"><span class="dot" style="background:#1A56DB"></span> Corte Metro</div>
   `;
   return div;
 };
