@@ -3,309 +3,278 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alertas Madrid — Este fin de semana</title>
+  <title>Visita del Papa León XIV — Madrid</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f5f3;
-      color: #1a1a1a;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f3; color: #1a1a1a; }
 
     header {
       background: #fff;
       border-bottom: 1px solid #e5e5e5;
-      padding: 16px 24px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
+    header h1 { font-size: 17px; font-weight: 600; }
+    header p { font-size: 12px; color: #888; margin-top: 2px; }
 
-    header h1 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    header p {
-      font-size: 13px;
-      color: #888;
-      margin-top: 2px;
-    }
-
-    .filter-bar {
+    .toolbar {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 10px 20px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      padding: 14px 24px;
-      background: #fff;
-      border-bottom: 1px solid #e5e5e5;
+      align-items: center;
     }
-
     .filter-btn {
-      font-size: 13px;
-      padding: 6px 16px;
+      font-size: 12px;
+      padding: 5px 14px;
       border-radius: 20px;
       border: 1px solid #ddd;
       background: #fff;
       color: #555;
       cursor: pointer;
       transition: all 0.15s;
+      white-space: nowrap;
     }
-
     .filter-btn:hover { background: #f0f0f0; }
+    .filter-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; font-weight: 500; }
 
-    .filter-btn.active {
-      background: #1a1a1a;
-      color: #fff;
-      border-color: #1a1a1a;
-      font-weight: 500;
+    .sep { width: 1px; height: 20px; background: #e5e5e5; margin: 0 4px; }
+
+    .contador {
+      font-size: 12px;
+      color: #999;
+      padding: 6px 20px;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
     }
 
-    #map {
-      width: 100%;
-      height: calc(100vh - 130px);
-    }
+    #map { width: 100%; height: calc(100vh - 138px); }
 
     .legend {
       background: #fff;
       border: 1px solid #e5e5e5;
       border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px;
+      padding: 8px 12px;
+      font-size: 12px;
       line-height: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
+    .legend-item { display: flex; align-items: center; gap: 8px; color: #333; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #333;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    .popup-title {
-      font-weight: 600;
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #1a1a1a;
-    }
-
-    .popup-meta {
-      font-size: 12px;
-      color: #555;
-      margin-bottom: 3px;
-      line-height: 1.5;
-    }
-
-    .popup-desc {
-      font-size: 12px;
-      color: #333;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .popup-badge {
-      display: inline-block;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 10px;
-      margin-top: 8px;
-      font-weight: 500;
-    }
-
-    .leaflet-popup-content-wrapper {
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-      border: 1px solid #e5e5e5;
-    }
-
-    .leaflet-popup-content {
-      min-width: 210px;
-      margin: 14px 16px;
-    }
-
-    .contador {
-      font-size: 13px;
-      color: #888;
-      padding: 8px 24px;
-      background: #fff;
-      border-bottom: 1px solid #e5e5e5;
-    }
+    .leaflet-popup-content-wrapper { border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border: 1px solid #e5e5e5; }
+    .leaflet-popup-content { min-width: 220px; margin: 14px 16px; }
+    .popup-dia { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .popup-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #1a1a1a; line-height: 1.3; }
+    .popup-meta { font-size: 12px; color: #555; margin-bottom: 3px; line-height: 1.5; }
+    .popup-desc { font-size: 12px; color: #333; margin-top: 6px; line-height: 1.5; border-top: 1px solid #f0f0f0; padding-top: 6px; }
+    .popup-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
   </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>📍 Alertas Madrid</h1>
-    <p>Cortes y eventos este fin de semana</p>
+    <h1>📍 Visita del Papa León XIV — Madrid</h1>
+    <p>Agenda oficial · 6, 7 y 8 de junio de 2025</p>
   </div>
 </header>
 
-<div class="filter-bar" id="filters">
-  <button class="filter-btn active" data-tipo="todos">Todos</button>
-  <button class="filter-btn" data-tipo="carrera">🏃 Carreras</button>
-  <button class="filter-btn" data-tipo="corte">🚧 Cortes</button>
-  <button class="filter-btn" data-tipo="evento">🎉 Eventos</button>
+<div class="toolbar">
+  <button class="filter-btn active" data-filtro="todos" data-grupo="dia">Todos los días</button>
+  <button class="filter-btn" data-filtro="Sábado 6 jun" data-grupo="dia">Sáb 6 jun</button>
+  <button class="filter-btn" data-filtro="Domingo 7 jun" data-grupo="dia">Dom 7 jun</button>
+  <button class="filter-btn" data-filtro="Lunes 8 jun" data-grupo="dia">Lun 8 jun</button>
+  <div class="sep"></div>
+  <button class="filter-btn active" data-filtro="todos" data-grupo="tipo">Todos los actos</button>
+  <button class="filter-btn" data-filtro="misa" data-grupo="tipo">⛪ Actos religiosos</button>
+  <button class="filter-btn" data-filtro="evento" data-grupo="tipo">🤝 Encuentros</button>
 </div>
 
-<div class="contador" id="contador">Mostrando 6 alertas</div>
-
+<div class="contador" id="contador">Mostrando 12 ubicaciones</div>
 <div id="map"></div>
 
 <script>
-  // ─────────────────────────────────────────────
-  // DATOS — edita aquí para añadir o quitar eventos
-  // ─────────────────────────────────────────────
-  const eventos = [
-    {
-      tipo: "carrera",
-      nombre: "Carrera Popular San Isidro",
-      descripcion: "Corte total del Paseo del Prado y Recoletos durante la prueba.",
-      horario: "Sáb 8:00 – 12:00h",
-      calles: "P. del Prado, P. de Recoletos",
-      lat: 40.4138,
-      lng: -3.6934
-    },
-    {
-      tipo: "corte",
-      nombre: "Corte por obras — Gran Vía",
-      descripcion: "Carril central cortado entre Callao y Red de San Luis.",
-      horario: "Todo el fin de semana",
-      calles: "Gran Vía tramo central",
-      lat: 40.4200,
-      lng: -3.7025
-    },
-    {
-      tipo: "carrera",
-      nombre: "10K Parque del Retiro",
-      descripcion: "Cierre parcial del parque y accesos por Calle de Alfonso XII.",
-      horario: "Dom 9:00 – 13:00h",
-      calles: "Alfonso XII, Menéndez Pelayo",
-      lat: 40.4153,
-      lng: -3.6844
-    },
-    {
-      tipo: "evento",
-      nombre: "Feria del Libro — Retiro",
-      descripcion: "Afluencia masiva prevista. Aparcamiento muy limitado en la zona.",
-      horario: "Sáb y Dom 10:00 – 21:00h",
-      calles: "Paseo de la Castellana (Retiro)",
-      lat: 40.4180,
-      lng: -3.6790
-    },
-    {
-      tipo: "corte",
-      nombre: "Corte — Calle Serrano",
-      descripcion: "Obras de remodelación, acceso peatonal restringido.",
-      horario: "Sáb 7:00 – 20:00h",
-      calles: "Serrano entre Goya y Juan Bravo",
-      lat: 40.4285,
-      lng: -3.6884
-    },
-    {
-      tipo: "evento",
-      nombre: "Concierto Estadio Metropolitano",
-      descripcion: "Afluencia masiva desde las 18h. Se recomienda metro.",
-      horario: "Sáb 20:00 – 00:00h",
-      calles: "Av. de Luis Aragonés",
-      lat: 40.4361,
-      lng: -3.5993
-    }
-  ];
-  // ─────────────────────────────────────────────
-
-  const colores = {
-    carrera: { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Carrera popular" },
-    corte:   { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte de tráfico" },
-    evento:  { pin: "#1D9E75", badgeBg: "#E1F5EE", badgeColor: "#085041", label: "Evento" }
-  };
-
-  function makeIcon(tipo) {
-    const color = colores[tipo].pin;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
-      <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="${color}"/>
-      <circle cx="14" cy="14" r="6" fill="white"/>
-    </svg>`;
-    return L.divIcon({
-      html: svg,
-      className: '',
-      iconSize: [28, 36],
-      iconAnchor: [14, 36],
-      popupAnchor: [0, -40]
-    });
+const eventos = [
+  {
+    tipo: "evento", dia: "Sábado 6 jun",
+    nombre: "Llegada — Aeropuerto Adolfo Suárez",
+    descripcion: "Llegada del Papa León XIV a Madrid. Accesos al aeropuerto y zonas colindantes con posibles restricciones.",
+    horario: "10:30h", calles: "Aeropuerto Adolfo Suárez Madrid-Barajas",
+    lat: 40.4614, lng: -3.5763
+  },
+  {
+    tipo: "evento", dia: "Sábado 6 jun",
+    nombre: "Ceremonia de bienvenida — Palacio Real",
+    descripcion: "Ceremonia oficial, visita a SS.MM. los Reyes y encuentro con autoridades, sociedad civil y cuerpo diplomático.",
+    horario: "11:30 – 13:00h", calles: "Palacio Real, Calle de Bailén",
+    lat: 40.4180, lng: -3.7144
+  },
+  {
+    tipo: "evento", dia: "Sábado 6 jun",
+    nombre: "Proyecto social CEDIA 24 Horas",
+    descripcion: "Visita al Centro de Información y Acogida. Posibles restricciones de acceso en la zona.",
+    horario: "18:00h", calles: "C/ Barquillo, 3 — Madrid Centro",
+    lat: 40.4204, lng: -3.6957
+  },
+  {
+    tipo: "misa", dia: "Sábado 6 jun",
+    nombre: "Vigilia de oración con jóvenes — Plaza de Lima",
+    descripcion: "Vigilia multitudinaria. Cortes en Paseo de la Castellana y accesos a la plaza. Se recomienda metro.",
+    horario: "20:30h", calles: "Plaza de Lima, Paseo de la Castellana",
+    lat: 40.4524, lng: -3.6916
+  },
+  {
+    tipo: "misa", dia: "Domingo 7 jun",
+    nombre: "Santa Misa — Plaza de Cibeles",
+    descripcion: "Misa pontifical con procesión del Corpus Christi. Cortes totales en Plaza de Cibeles y calles adyacentes.",
+    horario: "10:00h", calles: "Plaza de Cibeles y entorno",
+    lat: 40.4195, lng: -3.6922
+  },
+  {
+    tipo: "evento", dia: "Domingo 7 jun",
+    nombre: "Encuentro Orden de San Agustín — Nunciatura",
+    descripcion: "Encuentro privado con miembros de la Orden de San Agustín.",
+    horario: "16:30h", calles: "Av. de Pío XII, 46 — Chamartín",
+    lat: 40.4618, lng: -3.6769
+  },
+  {
+    tipo: "evento", dia: "Domingo 7 jun",
+    nombre: "Acto cultural y deportivo — Movistar Arena",
+    descripcion: "Encuentro con el mundo de la cultura, el arte, la economía y el deporte.",
+    horario: "18:00h", calles: "Av. de Felipe II — Movistar Arena",
+    lat: 40.4357, lng: -3.6613
+  },
+  {
+    tipo: "evento", dia: "Lunes 8 jun",
+    nombre: "Reunión con el Presidente del Gobierno — Nunciatura",
+    descripcion: "Encuentro del Papa con Pedro Sánchez.",
+    horario: "09:30h", calles: "Av. de Pío XII, 46 — Chamartín",
+    lat: 40.4622, lng: -3.6775
+  },
+  {
+    tipo: "evento", dia: "Lunes 8 jun",
+    nombre: "Visita al Congreso de los Diputados",
+    descripcion: "Encuentro con miembros del Parlamento español. Cortes en Carrera de San Jerónimo.",
+    horario: "10:30h", calles: "Carrera de San Jerónimo, s/n",
+    lat: 40.4155, lng: -3.6955
+  },
+  {
+    tipo: "evento", dia: "Lunes 8 jun",
+    nombre: "Encuentro con Obispos — Conferencia Episcopal",
+    descripcion: "Encuentro con los Obispos de España en la sede de la Conferencia Episcopal Española.",
+    horario: "11:30h", calles: "C/ Añastro, 1 — Madrid",
+    lat: 40.4634, lng: -3.6695
+  },
+  {
+    tipo: "misa", dia: "Lunes 8 jun",
+    nombre: "Oración a la Virgen de la Almudena — Catedral",
+    descripcion: "Oración y homenaje. Accesos restringidos en Calle de Bailén y entorno de la Catedral.",
+    horario: "18:00h", calles: "Catedral de la Almudena, C/ de Bailén",
+    lat: 40.4153, lng: -3.7143
+  },
+  {
+    tipo: "misa", dia: "Lunes 8 jun",
+    nombre: "Encuentro diocesano — Estadio Santiago Bernabéu",
+    descripcion: "Encuentro multitudinario. Cortes en Paseo de la Castellana, Concha Espina y accesos al estadio.",
+    horario: "19:00h", calles: "Av. de Concha Espina, 1",
+    lat: 40.4531, lng: -3.6883
   }
+];
 
-  const map = L.map('map').setView([40.4200, -3.7025], 13);
+const colores = {
+  evento: { pin: "#378ADD", badgeBg: "#E6F1FB", badgeColor: "#0C447C", label: "Encuentro / acto oficial" },
+  misa:   { pin: "#7F77DD", badgeBg: "#EEEDFE", badgeColor: "#3C3489", label: "Acto religioso" }
+};
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-    maxZoom: 18
-  }).addTo(map);
+const diaColores = { "Sábado 6 jun": "#E24B4A", "Domingo 7 jun": "#1D9E75", "Lunes 8 jun": "#BA7517" };
 
-  let markers = [];
+let filtroDia = "todos";
+let filtroTipo = "todos";
 
-  function renderMarkers(filtro) {
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
+function makeIcon(tipo, dia) {
+  const color = colores[tipo].pin;
+  const num = { "Sábado 6 jun": "S", "Domingo 7 jun": "D", "Lunes 8 jun": "L" }[dia] || "?";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
+    <path d="M16 0C7.163 0 0 7.163 0 16c0 10.667 16 26 16 26S32 26.667 32 16C32 7.163 24.837 0 16 0z" fill="${color}"/>
+    <circle cx="16" cy="16" r="9" fill="white"/>
+    <text x="16" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="${color}" font-family="sans-serif">${num}</text>
+  </svg>`;
+  return L.divIcon({ html: svg, className: '', iconSize: [32, 42], iconAnchor: [16, 42], popupAnchor: [0, -44] });
+}
 
-    const filtrados = eventos.filter(e => filtro === "todos" || e.tipo === filtro);
-    document.getElementById('contador').textContent =
-      `Mostrando ${filtrados.length} alerta${filtrados.length !== 1 ? 's' : ''}`;
+const map = L.map('map').setView([40.435, -3.690], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 18
+}).addTo(map);
 
-    filtrados.forEach(e => {
-      const c = colores[e.tipo];
-      const popup = `
-        <div>
-          <div class="popup-title">${e.nombre}</div>
-          <div class="popup-meta">⏰ ${e.horario}</div>
-          <div class="popup-meta">📍 ${e.calles}</div>
-          <div class="popup-desc">${e.descripcion}</div>
-          <span class="popup-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.label}</span>
-        </div>
-      `;
-      const m = L.marker([e.lat, e.lng], { icon: makeIcon(e.tipo) })
-        .addTo(map)
-        .bindPopup(popup);
-      markers.push(m);
-    });
-  }
+let markers = [];
 
-  renderMarkers("todos");
-
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderMarkers(btn.dataset.tipo);
-    });
+function renderMarkers() {
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+  const filtrados = eventos.filter(e =>
+    (filtroDia === "todos" || e.dia === filtroDia) &&
+    (filtroTipo === "todos" || e.tipo === filtroTipo)
+  );
+  document.getElementById('contador').textContent =
+    `Mostrando ${filtrados.length} ubicación${filtrados.length !== 1 ? 'es' : ''}`;
+  filtrados.forEach(e => {
+    const c = colores[e.tipo];
+    const popup = `<div>
+      <div class="popup-dia">${e.dia}</div>
+      <div class="popup-title">${e.nombre}</div>
+      <div class="popup-meta">⏰ ${e.horario}</div>
+      <div class="popup-meta">📍 ${e.calles}</div>
+      <div class="popup-desc">${e.descripcion}</div>
+      <span class="popup-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.label}</span>
+    </div>`;
+    const m = L.marker([e.lat, e.lng], { icon: makeIcon(e.tipo, e.dia) }).addTo(map).bindPopup(popup);
+    markers.push(m);
   });
+}
 
-  // Leyenda
-  const legend = L.control({ position: 'bottomright' });
-  legend.onAdd = () => {
-    const div = L.DomUtil.create('div', 'legend');
-    div.innerHTML = Object.entries(colores).map(([, c]) =>
-      `<div class="legend-item"><span class="dot" style="background:${c.pin}"></span>${c.label}</div>`
-    ).join('');
-    return div;
-  };
-  legend.addTo(map);
+renderMarkers();
+
+document.querySelectorAll('.filter-btn[data-grupo="dia"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-grupo="dia"]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filtroDia = btn.dataset.filtro;
+    renderMarkers();
+  });
+});
+document.querySelectorAll('.filter-btn[data-grupo="tipo"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn[data-grupo="tipo"]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filtroTipo = btn.dataset.filtro;
+    renderMarkers();
+  });
+});
+
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = () => {
+  const div = L.DomUtil.create('div', 'legend');
+  div.innerHTML = `
+    <div class="legend-item"><span class="dot" style="background:#378ADD"></span> Encuentro / acto oficial</div>
+    <div class="legend-item"><span class="dot" style="background:#7F77DD"></span> Acto religioso</div>
+    <div style="border-top:1px solid #eee; margin: 4px 0;"></div>
+    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#E24B4A;width:11px;text-align:center">S</span> Sábado 6 jun</div>
+    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#1D9E75;width:11px;text-align:center">D</span> Domingo 7 jun</div>
+    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#BA7517;width:11px;text-align:center">L</span> Lunes 8 jun</div>
+  `;
+  return div;
+};
+legend.addTo(map);
 </script>
-
 </body>
 </html>
