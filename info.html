@@ -20,22 +20,29 @@
     }
     header h1 { font-size: 16px; font-weight: 600; }
     header p { font-size: 11px; color: #999; margin-top: 2px; }
-    .nav-btn {
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      background: #fff;
-      color: #555;
-      text-decoration: none;
-      white-space: nowrap;
-    }
+    .nav-btn { font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid #ddd; background: #fff; color: #555; text-decoration: none; white-space: nowrap; }
     .nav-btn:hover { background: #f0f0f0; }
 
-    .content {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 28px 20px 60px;
+    .content { max-width: 720px; margin: 0 auto; padding: 28px 20px 60px; }
+
+    .aviso {
+      background: #FEF3E2;
+      border: 1px solid #f5d9a0;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 13px;
+      color: #633806;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .seccion-titulo {
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
 
     .intro {
@@ -50,83 +57,56 @@
     }
     .intro p + p { margin-top: 12px; }
 
-    .aviso {
-      background: #FEF3E2;
-      border: 1px solid #f5d9a0;
-      border-radius: 12px;
-      padding: 14px 20px;
-      font-size: 13px;
-      color: #633806;
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .seccion-titulo {
-      font-size: 13px;
-      font-weight: 600;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 12px;
       margin-bottom: 28px;
     }
-
-    .card {
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 12px;
-      padding: 16px 18px;
-    }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 18px; }
     .card-icon { font-size: 22px; margin-bottom: 8px; }
     .card-title { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #1a1a1a; }
     .card-text { font-size: 13px; color: #555; line-height: 1.6; }
 
-    .rec-list {
-      background: #fff;
-      border: 1px solid #e5e5e5;
+    /* Metro cierres */
+    .metro-box {
+      background: #FCEBEB;
+      border: 1px solid #f7c1c1;
       border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 28px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
     }
-    .rec-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      padding: 14px 20px;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #333;
-    }
-    .rec-item:last-child { border-bottom: none; }
-    .rec-num {
-      flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #1a1a1a;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 1px;
-    }
+    .metro-box-title { font-size: 13px; font-weight: 600; color: #A32D2D; margin-bottom: 12px; }
+    .metro-linea { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f7c1c1; font-size: 13px; color: #333; }
+    .metro-linea:last-child { border-bottom: none; padding-bottom: 0; }
+    .metro-badge { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+    .l2 { background: #e31e24; }
+    .l4 { background: #944247; }
+    .l5 { background: #96bf0d; color: #333; }
 
-    .fuentes {
-      font-size: 12px;
-      color: #aaa;
-      text-align: center;
-      padding-top: 12px;
-    }
-    .fuentes a { color: #888; }
+    /* Tabs */
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .tab-btn { font-size: 12px; padding: 5px 13px; border-radius: 20px; border: 1px solid #ddd; background: #fff; color: #555; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .tab-btn:hover { background: #f0f0f0; }
+    .tab-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; font-weight: 500; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Bus cards */
+    .bus-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px 20px; margin-bottom: 10px; }
+    .bus-hora { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    .bus-lugar { font-size: 13px; color: #555; margin-bottom: 10px; margin-top: 2px; }
+    .bus-lineas-titulo { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 7px; }
+    .lineas-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+    .linea-tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: #f0f0f0; color: #444; }
+
+    /* Recs */
+    .rec-list { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+    .rec-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; border-bottom: 1px solid #f0f0f0; font-size: 13px; line-height: 1.6; color: #333; }
+    .rec-item:last-child { border-bottom: none; }
+    .rec-num { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+
+    .fuentes { font-size: 12px; color: #aaa; text-align: center; padding-top: 12px; }
   </style>
 </head>
 <body>
@@ -142,7 +122,7 @@
 <div class="content">
 
   <div class="aviso">
-    ⚠️ <strong>Domingo 7 junio:</strong> mayor impacto en movilidad de los últimos años según el Ayuntamiento. ~1.000.000 asistentes previstos en la misa de Plaza de Cibeles. Metro reforzado al 125% y gratuito los días 6 y 7 jun.
+    ⚠️ <strong>Domingo 7 junio:</strong> mayor impacto en movilidad de los últimos años. ~1.000.000 asistentes en Plaza de Cibeles. Metro reforzado al 125% y EMT gratuita los días 6 y 7 jun.
   </div>
 
   <p class="seccion-titulo">Contexto</p>
@@ -151,31 +131,117 @@
     <p>El perfil de los asistentes es en general tranquilo: familias, jóvenes de parroquias, peregrinos, personas mayores, voluntarios, comunidades religiosas y público general. No se prevé un riesgo elevado de altercados, sino problemas propios de grandes concentraciones: aglomeraciones, esperas, dificultad para moverse y posible saturación del transporte.</p>
   </div>
 
-  <p class="seccion-titulo">Refuerzos de transporte público</p>
+  <p class="seccion-titulo">Refuerzos y servicios especiales</p>
   <div class="cards">
     <div class="card">
       <div class="card-icon">🚇</div>
       <div class="card-title">Metro de Madrid</div>
-      <div class="card-text">Servicio reforzado al 125% en líneas principales. Cierre ampliado hasta las 02:30 h la noche del 6 al 7 de junio.</div>
+      <div class="card-text">Servicio reforzado al 125% en líneas principales. Cierre ampliado hasta las <strong>02:30 h</strong> hasta el 9 de junio.</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚍</div>
+      <div class="card-title">EMT y Servicios Especiales</div>
+      <div class="card-text">Autobuses gratuitos los días <strong>6 y 7 de junio</strong>. Refuerzos diurnos y nocturnos especiales en las líneas <strong>C1, C2 y Exprés Aeropuerto</strong>.</div>
     </div>
     <div class="card">
       <div class="card-icon">🚌</div>
       <div class="card-title">Autobuses interurbanos</div>
-      <div class="card-text">Hasta 128 vehículos adicionales. Cobertura especial a más de 20 municipios que alojarán peregrinos.</div>
+      <div class="card-text">Hasta <strong>128 vehículos adicionales</strong> (CRTM) para dar cobertura especial a más de 20 municipios que alojarán peregrinos.</div>
     </div>
     <div class="card">
-      <div class="card-icon">🚍</div>
-      <div class="card-title">EMT gratuita</div>
-      <div class="card-text">Autobuses EMT gratuitos los días de actos centrales: sábado 6 y domingo 7 de junio.</div>
-    </div>
-    <div class="card">
-      <div class="card-icon">🚆</div>
-      <div class="card-title">Cercanías</div>
-      <div class="card-text">Refuerzo de frecuencias en las principales líneas de Cercanías que acceden al centro de Madrid.</div>
+      <div class="card-icon">🚲</div>
+      <div class="card-title">BiciMAD gratuito</div>
+      <div class="card-text">Desplazamientos de hasta <strong>30 minutos</strong> gratuitos en toda la red municipal durante los días del evento.</div>
     </div>
   </div>
 
-  <p class="seccion-titulo">Recomendaciones</p>
+  <p class="seccion-titulo">Paradas de metro cerradas</p>
+  <div class="metro-box">
+    <div class="metro-box-title">⛔ Estaciones cerradas durante los actos (Hasta las 02:30h del 9 jun)</div>
+    <div class="metro-linea">
+      <span class="metro-badge l2">2</span>
+      <span>Retiro, Banco de España y Sevilla</span>
+    </div>
+    <div class="metro-linea">
+      <span class="metro-badge l4">4</span>
+      <span>Velázquez, Serrano y Colón</span>
+    </div>
+    <div class="metro-linea">
+      <span class="metro-badge l5">5</span>
+      <span>Chueca</span>
+    </div>
+  </div>
+
+  <p class="seccion-titulo">Líneas de autobús afectadas por día</p>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="sab">Sáb 6 jun</button>
+    <button class="tab-btn" data-tab="dom">Dom 7 jun</button>
+    <button class="tab-btn" data-tab="lun">Lun 8 jun</button>
+    <button class="tab-btn" data-tab="mar">Mar 9 jun</button>
+  </div>
+
+  <div id="tab-sab" class="tab-panel active">
+    <div class="bus-card">
+      <div class="bus-hora">20:30 h</div>
+      <div class="bus-lugar">Vigilia de jóvenes — Plaza de Lima y Paseo de la Castellana</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">001</span><span class="linea-tag">002</span><span class="linea-tag">1</span><span class="linea-tag">2</span><span class="linea-tag">3</span><span class="linea-tag">5</span><span class="linea-tag">7</span><span class="linea-tag">9</span><span class="linea-tag">10</span><span class="linea-tag">11</span><span class="linea-tag">12</span><span class="linea-tag">14</span><span class="linea-tag">15</span><span class="linea-tag">16</span><span class="linea-tag">19</span><span class="linea-tag">20</span><span class="linea-tag">21</span><span class="linea-tag">27</span><span class="linea-tag">28</span><span class="linea-tag">34</span><span class="linea-tag">37</span><span class="linea-tag">40</span><span class="linea-tag">43</span><span class="linea-tag">45</span><span class="linea-tag">46</span><span class="linea-tag">51</span><span class="linea-tag">52</span><span class="linea-tag">53</span><span class="linea-tag">61</span><span class="linea-tag">73</span><span class="linea-tag">74</span><span class="linea-tag">120</span><span class="linea-tag">126</span><span class="linea-tag">146</span><span class="linea-tag">147</span><span class="linea-tag">149</span><span class="linea-tag">150</span><span class="linea-tag">C03</span><span class="linea-tag">C1</span><span class="linea-tag">C2</span><span class="linea-tag">E1</span><span class="linea-tag">S10</span><span class="linea-tag">Exprés Aeropuerto</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-dom" class="tab-panel">
+    <div class="bus-card">
+      <div class="bus-hora">10:00 h</div>
+      <div class="bus-lugar">Santa Misa y procesión del Corpus Christi — Plaza de Cibeles</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">001</span><span class="linea-tag">002</span><span class="linea-tag">1</span><span class="linea-tag">2</span><span class="linea-tag">3</span><span class="linea-tag">5</span><span class="linea-tag">7</span><span class="linea-tag">9</span><span class="linea-tag">10</span><span class="linea-tag">12</span><span class="linea-tag">14</span><span class="linea-tag">15</span><span class="linea-tag">19</span><span class="linea-tag">20</span><span class="linea-tag">21</span><span class="linea-tag">27</span><span class="linea-tag">28</span><span class="linea-tag">34</span><span class="linea-tag">37</span><span class="linea-tag">40</span><span class="linea-tag">43</span><span class="linea-tag">45</span><span class="linea-tag">46</span><span class="linea-tag">51</span><span class="linea-tag">52</span><span class="linea-tag">53</span><span class="linea-tag">74</span><span class="linea-tag">120</span><span class="linea-tag">126</span><span class="linea-tag">146</span><span class="linea-tag">147</span><span class="linea-tag">149</span><span class="linea-tag">150</span><span class="linea-tag">C1</span><span class="linea-tag">C2</span><span class="linea-tag">C03</span><span class="linea-tag">E1</span><span class="linea-tag">M3</span><span class="linea-tag">S10</span><span class="linea-tag">Exprés Aeropuerto</span>
+      </div>
+    </div>
+    <div class="bus-card">
+      <div class="bus-hora">18:00 h</div>
+      <div class="bus-lugar">Encuentro en el Palacio de los Deportes (WiZink Center)</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">30</span><span class="linea-tag">C1</span><span class="linea-tag">C2</span><span class="linea-tag">E4</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-lun" class="tab-panel">
+    <div class="bus-card">
+      <div class="bus-hora">18:00 h</div>
+      <div class="bus-lugar">Oración y ofrenda floral a la Virgen de la Almudena — Catedral</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">3</span><span class="linea-tag">148</span><span class="linea-tag">M3</span>
+      </div>
+    </div>
+    <div class="bus-card">
+      <div class="bus-hora">19:00 h</div>
+      <div class="bus-lugar">Encuentro en el Estadio Santiago Bernabéu</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">5</span><span class="linea-tag">14</span><span class="linea-tag">27</span><span class="linea-tag">40</span><span class="linea-tag">43</span><span class="linea-tag">120</span><span class="linea-tag">126</span><span class="linea-tag">147</span><span class="linea-tag">150</span><span class="linea-tag">S10</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-mar" class="tab-panel">
+    <div class="bus-card">
+      <div class="bus-hora">10:20 h</div>
+      <div class="bus-lugar">Encuentro en IFEMA</div>
+      <div class="bus-lineas-titulo">Líneas afectadas</div>
+      <div class="lineas-wrap">
+        <span class="linea-tag">73</span><span class="linea-tag">112</span><span class="linea-tag">122</span><span class="linea-tag">SE709</span>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <p class="seccion-titulo">Recomendaciones generales</p>
   <div class="rec-list">
     <div class="rec-item"><span class="rec-num">1</span><span>Evitar el vehículo privado en las zonas afectadas durante toda la jornada de los actos principales.</span></div>
     <div class="rec-item"><span class="rec-num">2</span><span>Priorizar Metro y Cercanías frente al autobús en áreas con cortes de tráfico.</span></div>
@@ -195,5 +261,17 @@
   <p class="fuentes">Fuente: Ayuntamiento de Madrid · EMT · Metro de Madrid · Cercanías Renfe · Vatican.va</p>
 
 </div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
 </body>
 </html>
