@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visita del Papa León XIV — Madrid</title>
+  <title>Cortes de tráfico — Papa León XIV en Madrid</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
@@ -13,28 +13,28 @@
     header {
       background: #fff;
       border-bottom: 1px solid #e5e5e5;
-      padding: 14px 20px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
-    header h1 { font-size: 17px; font-weight: 600; }
-    header p { font-size: 12px; color: #888; margin-top: 2px; }
+    header h1 { font-size: 16px; font-weight: 600; }
+    header p { font-size: 11px; color: #999; margin-top: 2px; }
 
     .toolbar {
       background: #fff;
       border-bottom: 1px solid #e5e5e5;
-      padding: 10px 20px;
+      padding: 9px 20px;
       display: flex;
-      gap: 8px;
+      gap: 7px;
       flex-wrap: wrap;
       align-items: center;
     }
     .filter-btn {
       font-size: 12px;
-      padding: 5px 14px;
+      padding: 5px 13px;
       border-radius: 20px;
       border: 1px solid #ddd;
       background: #fff;
@@ -45,18 +45,28 @@
     }
     .filter-btn:hover { background: #f0f0f0; }
     .filter-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; font-weight: 500; }
+    .sep { width: 1px; height: 18px; background: #e5e5e5; margin: 0 3px; }
 
-    .sep { width: 1px; height: 20px; background: #e5e5e5; margin: 0 4px; }
+    .aviso {
+      background: #FEF3E2;
+      border-bottom: 1px solid #f5d9a0;
+      padding: 7px 20px;
+      font-size: 12px;
+      color: #633806;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     .contador {
-      font-size: 12px;
+      font-size: 11px;
       color: #999;
-      padding: 6px 20px;
+      padding: 5px 20px;
       background: #fff;
       border-bottom: 1px solid #e5e5e5;
     }
 
-    #map { width: 100%; height: calc(100vh - 138px); }
+    #map { width: 100%; height: calc(100vh - 160px); }
 
     .legend {
       background: #fff;
@@ -71,147 +81,212 @@
     .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
     .leaflet-popup-content-wrapper { border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); border: 1px solid #e5e5e5; }
-    .leaflet-popup-content { min-width: 220px; margin: 14px 16px; }
-    .popup-dia { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .leaflet-popup-content { min-width: 230px; margin: 13px 15px; }
+    .popup-fecha { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
     .popup-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; color: #1a1a1a; line-height: 1.3; }
     .popup-meta { font-size: 12px; color: #555; margin-bottom: 3px; line-height: 1.5; }
     .popup-desc { font-size: 12px; color: #333; margin-top: 6px; line-height: 1.5; border-top: 1px solid #f0f0f0; padding-top: 6px; }
-    .popup-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
+    .popup-badge { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px; margin-top: 7px; font-weight: 500; }
   </style>
 </head>
 <body>
 
 <header>
   <div>
-    <h1>📍 Visita del Papa León XIV — Madrid</h1>
-    <p>Agenda oficial · 6, 7 y 8 de junio de 2025</p>
+    <h1>🚦 Cortes de tráfico — Papa León XIV en Madrid</h1>
+    <p>Fuente: Ayuntamiento de Madrid · EMT · Metro · Vatican.va · 3–9 junio 2026</p>
   </div>
 </header>
 
-<div class="toolbar">
-  <button class="filter-btn active" data-filtro="todos" data-grupo="dia">Todos los días</button>
-  <button class="filter-btn" data-filtro="Sábado 6 jun" data-grupo="dia">Sáb 6 jun</button>
-  <button class="filter-btn" data-filtro="Domingo 7 jun" data-grupo="dia">Dom 7 jun</button>
-  <button class="filter-btn" data-filtro="Lunes 8 jun" data-grupo="dia">Lun 8 jun</button>
-  <div class="sep"></div>
-  <button class="filter-btn active" data-filtro="todos" data-grupo="tipo">Todos los actos</button>
-  <button class="filter-btn" data-filtro="misa" data-grupo="tipo">⛪ Actos religiosos</button>
-  <button class="filter-btn" data-filtro="evento" data-grupo="tipo">🤝 Encuentros</button>
+<div class="aviso">
+  ⚠️ <strong>Dom 7 jun:</strong> mayor impacto en movilidad. Metro reforzado al 125%. EMT gratuita los días 6 y 7 jun.
 </div>
 
-<div class="contador" id="contador">Mostrando 12 ubicaciones</div>
+<div class="toolbar">
+  <button class="filter-btn active" data-filtro="todos" data-grupo="dia">Todos</button>
+  <button class="filter-btn" data-filtro="prev" data-grupo="dia">3–5 jun · Preparativos</button>
+  <button class="filter-btn" data-filtro="sab" data-grupo="dia">Sáb 6 jun</button>
+  <button class="filter-btn" data-filtro="dom" data-grupo="dia">Dom 7 jun</button>
+  <button class="filter-btn" data-filtro="lun" data-grupo="dia">Lun 8 jun</button>
+  <button class="filter-btn" data-filtro="mar" data-grupo="dia">Mar 9 jun</button>
+  <div class="sep"></div>
+  <button class="filter-btn active" data-filtro="todos" data-grupo="tipo">Todos los tipos</button>
+  <button class="filter-btn" data-filtro="total" data-grupo="tipo">🔴 Cierre total</button>
+  <button class="filter-btn" data-filtro="parcial" data-grupo="tipo">🟠 Corte parcial</button>
+  <button class="filter-btn" data-filtro="parking" data-grupo="tipo">🔵 Aparcamiento</button>
+</div>
+
+<div class="contador" id="contador"></div>
 <div id="map"></div>
 
 <script>
-const eventos = [
+const alertas = [
+  // ── PREPARATIVOS 3–5 jun ──────────────────────────────
   {
-    tipo: "evento", dia: "Sábado 6 jun",
-    nombre: "Llegada — Aeropuerto Adolfo Suárez",
-    descripcion: "Llegada del Papa León XIV a Madrid. Accesos al aeropuerto y zonas colindantes con posibles restricciones.",
-    horario: "10:30h", calles: "Aeropuerto Adolfo Suárez Madrid-Barajas",
-    lat: 40.4614, lng: -3.5763
-  },
-  {
-    tipo: "evento", dia: "Sábado 6 jun",
-    nombre: "Ceremonia de bienvenida — Palacio Real",
-    descripcion: "Ceremonia oficial, visita a SS.MM. los Reyes y encuentro con autoridades, sociedad civil y cuerpo diplomático.",
-    horario: "11:30 – 13:00h", calles: "Palacio Real, Calle de Bailén",
-    lat: 40.4180, lng: -3.7144
-  },
-  {
-    tipo: "evento", dia: "Sábado 6 jun",
-    nombre: "Proyecto social CEDIA 24 Horas",
-    descripcion: "Visita al Centro de Información y Acogida. Posibles restricciones de acceso en la zona.",
-    horario: "18:00h", calles: "C/ Barquillo, 3 — Madrid Centro",
-    lat: 40.4204, lng: -3.6957
-  },
-  {
-    tipo: "misa", dia: "Sábado 6 jun",
-    nombre: "Vigilia de oración con jóvenes — Plaza de Lima",
-    descripcion: "Vigilia multitudinaria. Cortes en Paseo de la Castellana y accesos a la plaza. Se recomienda metro.",
-    horario: "20:30h", calles: "Plaza de Lima, Paseo de la Castellana",
+    dia: "prev", fecha: "3 jun (noche)",
+    tipo: "total",
+    nombre: "Plaza de Lima y Castellana — Cierre total",
+    detalle: "Cierre total desde las 24:00 h del día 3. Zona de influencia en todo el Paseo de la Castellana.",
+    zona: "Plaza de Lima, Paseo de la Castellana",
     lat: 40.4524, lng: -3.6916
   },
   {
-    tipo: "misa", dia: "Domingo 7 jun",
-    nombre: "Santa Misa — Plaza de Cibeles",
-    descripcion: "Misa pontifical con procesión del Corpus Christi. Cortes totales en Plaza de Cibeles y calles adyacentes.",
-    horario: "10:00h", calles: "Plaza de Cibeles y entorno",
+    dia: "prev", fecha: "4 jun (noche)",
+    tipo: "total",
+    nombre: "Plaza de Cibeles y entorno — Cierre total",
+    detalle: "Cierre total desde las 24:00 h del día 4. Afecta a Recoletos, Alcalá hasta Independencia y Prado sentido norte.",
+    zona: "Plaza de Cibeles, Recoletos, Alcalá",
     lat: 40.4195, lng: -3.6922
   },
   {
-    tipo: "evento", dia: "Domingo 7 jun",
-    nombre: "Encuentro Orden de San Agustín — Nunciatura",
-    descripcion: "Encuentro privado con miembros de la Orden de San Agustín.",
-    horario: "16:30h", calles: "Av. de Pío XII, 46 — Chamartín",
-    lat: 40.4618, lng: -3.6769
+    dia: "prev", fecha: "5–7 jun",
+    tipo: "parking",
+    nombre: "Reservas SEA inhabilitadas — todo el municipio",
+    detalle: "Todas las reservas SEA del municipio inhabilitadas. Residentes AER con movilidad ampliada a cualquier barrio del AER.",
+    zona: "Todo el municipio de Madrid",
+    lat: 40.4168, lng: -3.7038
   },
   {
-    tipo: "evento", dia: "Domingo 7 jun",
-    nombre: "Acto cultural y deportivo — Movistar Arena",
-    descripcion: "Encuentro con el mundo de la cultura, el arte, la economía y el deporte.",
-    horario: "18:00h", calles: "Av. de Felipe II — Movistar Arena",
+    dia: "prev", fecha: "5–6 jun",
+    tipo: "parking",
+    nombre: "Zonas ORA afectadas",
+    detalle: "Distritos con ORA afectada: Centro (Justicia, Cortes), Retiro (Jerónimos), Salamanca (Recoletos, Castellana), Chamartín (El Viso, Hispanoamérica, Nueva España), Tetuán (Cuatro Caminos, Castillejos), Chamberí (Ríos Rosas, Almagro).",
+    zona: "Centro, Retiro, Salamanca, Chamartín, Tetuán, Chamberí",
+    lat: 40.4260, lng: -3.6800
+  },
+
+  // ── SÁBADO 6 JUN ─────────────────────────────────────
+  {
+    dia: "sab", fecha: "Sáb 6 jun — todo el día",
+    tipo: "total",
+    nombre: "Eje Recoletos–Castellana (Cibeles a Lima)",
+    detalle: "Eje central completamente cerrado. Acceso al túnel de Plaza de Castilla afectado desde las 14:30 h. ~800.000 asistentes previstos en la vigilia.",
+    zona: "Paseo de Recoletos, Paseo de la Castellana",
+    lat: 40.4360, lng: -3.6920
+  },
+  {
+    dia: "sab", fecha: "Sáb 6 jun — mañana",
+    tipo: "parcial",
+    nombre: "Entorno Palacio Real — perímetro de seguridad",
+    detalle: "Perímetro de seguridad por llegada papal (10:30 h) y actos institucionales (11:30–13:00 h). Calle Bailén y accesos afectados.",
+    zona: "Palacio Real, Calle de Bailén",
+    lat: 40.4180, lng: -3.7144
+  },
+  {
+    dia: "sab", fecha: "Sáb 6 jun — tarde",
+    tipo: "parcial",
+    nombre: "Entorno CEDIA 24 Horas",
+    detalle: "Restricciones perimetrales por visita social papal a las 18:00 h.",
+    zona: "C/ Barquillo, 3 — Madrid Centro",
+    lat: 40.4204, lng: -3.6957
+  },
+  {
+    dia: "sab", fecha: "Sáb 6 jun — noche",
+    tipo: "total",
+    nombre: "Plaza de Lima — Vigilia de oración",
+    detalle: "Vigilia con jóvenes (20:30 h). ~800.000 asistentes. Castellana cortada desde horas antes. Usar metro: Santiago Bernabéu o Lima.",
+    zona: "Plaza de Lima, accesos Castellana",
+    lat: 40.4526, lng: -3.6912
+  },
+
+  // ── DOMINGO 7 JUN ────────────────────────────────────
+  {
+    dia: "dom", fecha: "Dom 7 jun — todo el día",
+    tipo: "total",
+    nombre: "Plaza de Cibeles — Cierre total jornada completa",
+    detalle: "Mayor impacto en movilidad de los últimos años según fuentes municipales. ~1.000.000 asistentes a la misa (10:00 h).",
+    zona: "Plaza de Cibeles y eje central completo",
+    lat: 40.4195, lng: -3.6920
+  },
+  {
+    dia: "dom", fecha: "Dom 7 jun — mañana",
+    tipo: "total",
+    nombre: "Paseo del Prado, Recoletos y Alcalá",
+    detalle: "Cortes totales en vías de acceso a Cibeles. Procesión del Corpus Christi integrada en el recorrido de la misa.",
+    zona: "Paseo del Prado, Recoletos, Alcalá",
+    lat: 40.4138, lng: -3.6920
+  },
+  {
+    dia: "dom", fecha: "Dom 7 jun — tarde",
+    tipo: "parcial",
+    nombre: "Entorno Movistar Arena",
+    detalle: "Perímetro de seguridad por evento 'Tejer redes con la Cultura, el Arte, la Economía y el Deporte' (18:00 h).",
+    zona: "Av. de Felipe II — Movistar Arena",
     lat: 40.4357, lng: -3.6613
   },
   {
-    tipo: "evento", dia: "Lunes 8 jun",
-    nombre: "Reunión con el Presidente del Gobierno — Nunciatura",
-    descripcion: "Encuentro del Papa con Pedro Sánchez.",
-    horario: "09:30h", calles: "Av. de Pío XII, 46 — Chamartín",
-    lat: 40.4622, lng: -3.6775
+    dia: "dom", fecha: "Dom 7 jun — noche",
+    tipo: "parcial",
+    nombre: "Residencia del Cardenal Arzobispo",
+    detalle: "Restricciones puntuales por cena oficial del Papa (19:30 h).",
+    zona: "Residencia Cardenal Arzobispo de Madrid",
+    lat: 40.4280, lng: -3.7050
   },
+
+  // ── LUNES 8 JUN ──────────────────────────────────────
   {
-    tipo: "evento", dia: "Lunes 8 jun",
-    nombre: "Visita al Congreso de los Diputados",
-    descripcion: "Encuentro con miembros del Parlamento español. Cortes en Carrera de San Jerónimo.",
-    horario: "10:30h", calles: "Carrera de San Jerónimo, s/n",
+    dia: "lun", fecha: "Lun 8 jun — mañana",
+    tipo: "parcial",
+    nombre: "Congreso de los Diputados",
+    detalle: "Perímetro de seguridad para visita al Parlamento (10:30 h). Carrera de San Jerónimo y adyacentes afectadas.",
+    zona: "Carrera de San Jerónimo, s/n",
     lat: 40.4155, lng: -3.6955
   },
   {
-    tipo: "evento", dia: "Lunes 8 jun",
-    nombre: "Encuentro con Obispos — Conferencia Episcopal",
-    descripcion: "Encuentro con los Obispos de España en la sede de la Conferencia Episcopal Española.",
-    horario: "11:30h", calles: "C/ Añastro, 1 — Madrid",
+    dia: "lun", fecha: "Lun 8 jun — mañana",
+    tipo: "parcial",
+    nombre: "Conferencia Episcopal Española",
+    detalle: "Restricciones por encuentro con los obispos (11:30 h). Calle Añastro y accesos limitados.",
+    zona: "C/ Añastro, 1 — Ciudad Lineal",
     lat: 40.4634, lng: -3.6695
   },
   {
-    tipo: "misa", dia: "Lunes 8 jun",
-    nombre: "Oración a la Virgen de la Almudena — Catedral",
-    descripcion: "Oración y homenaje. Accesos restringidos en Calle de Bailén y entorno de la Catedral.",
-    horario: "18:00h", calles: "Catedral de la Almudena, C/ de Bailén",
+    dia: "lun", fecha: "Lun 8 jun — tarde",
+    tipo: "parcial",
+    nombre: "Catedral de la Almudena",
+    detalle: "Cierre perimetral para oración y homenaje a la Virgen de la Almudena (18:00 h). Calle Bailén y entorno afectados.",
+    zona: "Catedral de la Almudena, C/ de Bailén",
     lat: 40.4153, lng: -3.7143
   },
   {
-    tipo: "misa", dia: "Lunes 8 jun",
-    nombre: "Encuentro diocesano — Estadio Santiago Bernabéu",
-    descripcion: "Encuentro multitudinario. Cortes en Paseo de la Castellana, Concha Espina y accesos al estadio.",
-    horario: "19:00h", calles: "Av. de Concha Espina, 1",
+    dia: "lun", fecha: "Lun 8 jun — tarde-noche",
+    tipo: "parcial",
+    nombre: "Estadio Santiago Bernabéu",
+    detalle: "Cortes y restricciones por encuentro con la comunidad diocesana (19:00 h). Paseo de la Castellana norte y accesos al estadio cortados.",
+    zona: "Av. de Concha Espina, 1 — Bernabéu",
     lat: 40.4531, lng: -3.6883
+  },
+
+  // ── MARTES 9 JUN ─────────────────────────────────────
+  {
+    dia: "mar", fecha: "Mar 9 jun — mañana",
+    tipo: "parcial",
+    nombre: "Levantamiento progresivo de cortes",
+    detalle: "Comitiva de salida desde residencia a Barajas puede generar restricciones puntuales. Normalización del tráfico desde ~12:00 h.",
+    zona: "Accesos Aeropuerto Barajas",
+    lat: 40.4614, lng: -3.5763
   }
 ];
 
-const colores = {
-  evento: { pin: "#378ADD", badgeBg: "#E6F1FB", badgeColor: "#0C447C", label: "Encuentro / acto oficial" },
-  misa:   { pin: "#7F77DD", badgeBg: "#EEEDFE", badgeColor: "#3C3489", label: "Acto religioso" }
+const config = {
+  total:   { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Cierre total" },
+  parcial: { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte parcial" },
+  parking: { pin: "#378ADD", badgeBg: "#E6F1FB", badgeColor: "#0C447C", label: "Aparcamiento" }
 };
-
-const diaColores = { "Sábado 6 jun": "#E24B4A", "Domingo 7 jun": "#1D9E75", "Lunes 8 jun": "#BA7517" };
 
 let filtroDia = "todos";
 let filtroTipo = "todos";
 
-function makeIcon(tipo, dia) {
-  const color = colores[tipo].pin;
-  const num = { "Sábado 6 jun": "S", "Domingo 7 jun": "D", "Lunes 8 jun": "L" }[dia] || "?";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="42" viewBox="0 0 32 42">
-    <path d="M16 0C7.163 0 0 7.163 0 16c0 10.667 16 26 16 26S32 26.667 32 16C32 7.163 24.837 0 16 0z" fill="${color}"/>
-    <circle cx="16" cy="16" r="9" fill="white"/>
-    <text x="16" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="${color}" font-family="sans-serif">${num}</text>
+function makeIcon(tipo) {
+  const color = config[tipo].pin;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="40" viewBox="0 0 30 40">
+    <path d="M15 0C6.716 0 0 6.716 0 15c0 10 15 25 15 25S30 25 30 15C30 6.716 23.284 0 15 0z" fill="${color}"/>
+    <circle cx="15" cy="15" r="7" fill="white"/>
   </svg>`;
-  return L.divIcon({ html: svg, className: '', iconSize: [32, 42], iconAnchor: [16, 42], popupAnchor: [0, -44] });
+  return L.divIcon({ html: svg, className: '', iconSize: [30, 40], iconAnchor: [15, 40], popupAnchor: [0, -42] });
 }
 
-const map = L.map('map').setView([40.435, -3.690], 12);
+const map = L.map('map').setView([40.430, -3.693], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 18
 }).addTo(map);
@@ -221,23 +296,22 @@ let markers = [];
 function renderMarkers() {
   markers.forEach(m => map.removeLayer(m));
   markers = [];
-  const filtrados = eventos.filter(e =>
-    (filtroDia === "todos" || e.dia === filtroDia) &&
-    (filtroTipo === "todos" || e.tipo === filtroTipo)
+  const filtrados = alertas.filter(a =>
+    (filtroDia === "todos" || a.dia === filtroDia) &&
+    (filtroTipo === "todos" || a.tipo === filtroTipo)
   );
-  document.getElementById('contador').textContent =
-    `Mostrando ${filtrados.length} ubicación${filtrados.length !== 1 ? 'es' : ''}`;
-  filtrados.forEach(e => {
-    const c = colores[e.tipo];
+  const n = filtrados.length;
+  document.getElementById('contador').textContent = `Mostrando ${n} alerta${n !== 1 ? 's' : ''}`;
+  filtrados.forEach(a => {
+    const c = config[a.tipo];
     const popup = `<div>
-      <div class="popup-dia">${e.dia}</div>
-      <div class="popup-title">${e.nombre}</div>
-      <div class="popup-meta">⏰ ${e.horario}</div>
-      <div class="popup-meta">📍 ${e.calles}</div>
-      <div class="popup-desc">${e.descripcion}</div>
+      <div class="popup-fecha">${a.fecha}</div>
+      <div class="popup-title">${a.nombre}</div>
+      <div class="popup-meta">📍 ${a.zona}</div>
+      <div class="popup-desc">${a.detalle}</div>
       <span class="popup-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.label}</span>
     </div>`;
-    const m = L.marker([e.lat, e.lng], { icon: makeIcon(e.tipo, e.dia) }).addTo(map).bindPopup(popup);
+    const m = L.marker([a.lat, a.lng], { icon: makeIcon(a.tipo) }).addTo(map).bindPopup(popup);
     markers.push(m);
   });
 }
@@ -265,12 +339,9 @@ const legend = L.control({ position: 'bottomright' });
 legend.onAdd = () => {
   const div = L.DomUtil.create('div', 'legend');
   div.innerHTML = `
-    <div class="legend-item"><span class="dot" style="background:#378ADD"></span> Encuentro / acto oficial</div>
-    <div class="legend-item"><span class="dot" style="background:#7F77DD"></span> Acto religioso</div>
-    <div style="border-top:1px solid #eee; margin: 4px 0;"></div>
-    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#E24B4A;width:11px;text-align:center">S</span> Sábado 6 jun</div>
-    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#1D9E75;width:11px;text-align:center">D</span> Domingo 7 jun</div>
-    <div class="legend-item"><span style="font-size:11px;font-weight:700;color:#BA7517;width:11px;text-align:center">L</span> Lunes 8 jun</div>
+    <div class="legend-item"><span class="dot" style="background:#E24B4A"></span> Cierre total</div>
+    <div class="legend-item"><span class="dot" style="background:#BA7517"></span> Corte parcial</div>
+    <div class="legend-item"><span class="dot" style="background:#378ADD"></span> Aparcamiento</div>
   `;
   return div;
 };
