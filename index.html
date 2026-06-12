@@ -1,1 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alertas Madrid — Este fin de semana</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    header p {
+      font-size: 13px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 14px 24px;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .filter-btn {
+      font-size: 13px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { background: #f0f0f0; }
+
+    .filter-btn.active {
+      background: #1a1a1a;
+      color: #fff;
+      border-color: #1a1a1a;
+      font-weight: 500;
+    }
+
+    #map {
+      width: 100%;
+      height: calc(100vh - 130px);
+    }
+
+    .legend {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      line-height: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #333;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .popup-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #1a1a1a;
+    }
+
+    .popup-meta {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 3px;
+      line-height: 1.5;
+    }
+
+    .popup-desc {
+      font-size: 12px;
+      color: #333;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .popup-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      border: 1px solid #e5e5e5;
+    }
+
+    .leaflet-popup-content {
+      min-width: 210px;
+      margin: 14px 16px;
+    }
+
+    .contador {
+      font-size: 13px;
+      color: #888;
+      padding: 8px 24px;
+      background: #fff;
+      border-bottom: 1px solid #e5e5e5;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📍 Alertas Madrid</h1>
+    <p>Cortes y eventos este fin de semana</p>
+  </div>
+</header>
+
+<div class="filter-bar" id="filters">
+  <button class="filter-btn active" data-tipo="todos">Todos</button>
+  <button class="filter-btn" data-tipo="carrera">🏃 Carreras</button>
+  <button class="filter-btn" data-tipo="corte">🚧 Cortes</button>
+  <button class="filter-btn" data-tipo="evento">🎉 Eventos</button>
+</div>
+
+<div class="contador" id="contador">Mostrando 6 alertas</div>
+
+<div id="map"></div>
+
+<script>
+  // ─────────────────────────────────────────────
+  // DATOS — edita aquí para añadir o quitar eventos
+  // ─────────────────────────────────────────────
+  const eventos = [
+    {
+      tipo: "carrera",
+      nombre: "Carrera Popular San Isidro",
+      descripcion: "Corte total del Paseo del Prado y Recoletos durante la prueba.",
+      horario: "Sáb 8:00 – 12:00h",
+      calles: "P. del Prado, P. de Recoletos",
+      lat: 40.4138,
+      lng: -3.6934
+    },
+    {
+      tipo: "corte",
+      nombre: "Corte por obras — Gran Vía",
+      descripcion: "Carril central cortado entre Callao y Red de San Luis.",
+      horario: "Todo el fin de semana",
+      calles: "Gran Vía tramo central",
+      lat: 40.4200,
+      lng: -3.7025
+    },
+    {
+      tipo: "carrera",
+      nombre: "10K Parque del Retiro",
+      descripcion: "Cierre parcial del parque y accesos por Calle de Alfonso XII.",
+      horario: "Dom 9:00 – 13:00h",
+      calles: "Alfonso XII, Menéndez Pelayo",
+      lat: 40.4153,
+      lng: -3.6844
+    },
+    {
+      tipo: "evento",
+      nombre: "Feria del Libro — Retiro",
+      descripcion: "Afluencia masiva prevista. Aparcamiento muy limitado en la zona.",
+      horario: "Sáb y Dom 10:00 – 21:00h",
+      calles: "Paseo de la Castellana (Retiro)",
+      lat: 40.4180,
+      lng: -3.6790
+    },
+    {
+      tipo: "corte",
+      nombre: "Corte — Calle Serrano",
+      descripcion: "Obras de remodelación, acceso peatonal restringido.",
+      horario: "Sáb 7:00 – 20:00h",
+      calles: "Serrano entre Goya y Juan Bravo",
+      lat: 40.4285,
+      lng: -3.6884
+    },
+    {
+      tipo: "evento",
+      nombre: "Concierto Estadio Metropolitano",
+      descripcion: "Afluencia masiva desde las 18h. Se recomienda metro.",
+      horario: "Sáb 20:00 – 00:00h",
+      calles: "Av. de Luis Aragonés",
+      lat: 40.4361,
+      lng: -3.5993
+    }
+  ];
+  // ─────────────────────────────────────────────
+
+  const colores = {
+    carrera: { pin: "#E24B4A", badgeBg: "#FCEBEB", badgeColor: "#A32D2D", label: "Carrera popular" },
+    corte:   { pin: "#BA7517", badgeBg: "#FEF3E2", badgeColor: "#633806", label: "Corte de tráfico" },
+    evento:  { pin: "#1D9E75", badgeBg: "#E1F5EE", badgeColor: "#085041", label: "Evento" }
+  };
+
+  function makeIcon(tipo) {
+    const color = colores[tipo].pin;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
+      <path d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z" fill="${color}"/>
+      <circle cx="14" cy="14" r="6" fill="white"/>
+    </svg>`;
+    return L.divIcon({
+      html: svg,
+      className: '',
+      iconSize: [28, 36],
+      iconAnchor: [14, 36],
+      popupAnchor: [0, -40]
+    });
+  }
+
+  const map = L.map('map').setView([40.4200, -3.7025], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(map);
+
+  let markers = [];
+
+  function renderMarkers(filtro) {
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+
+    const filtrados = eventos.filter(e => filtro === "todos" || e.tipo === filtro);
+    document.getElementById('contador').textContent =
+      `Mostrando ${filtrados.length} alerta${filtrados.length !== 1 ? 's' : ''}`;
+
+    filtrados.forEach(e => {
+      const c = colores[e.tipo];
+      const popup = `
+        <div>
+          <div class="popup-title">${e.nombre}</div>
+          <div class="popup-meta">⏰ ${e.horario}</div>
+          <div class="popup-meta">📍 ${e.calles}</div>
+          <div class="popup-desc">${e.descripcion}</div>
+          <span class="popup-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.label}</span>
+        </div>
+      `;
+      const m = L.marker([e.lat, e.lng], { icon: makeIcon(e.tipo) })
+        .addTo(map)
+        .bindPopup(popup);
+      markers.push(m);
+    });
+  }
+
+  renderMarkers("todos");
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMarkers(btn.dataset.tipo);
+    });
+  });
+
+  // Leyenda
+  const legend = L.control({ position: 'bottomright' });
+  legend.onAdd = () => {
+    const div = L.DomUtil.create('div', 'legend');
+    div.innerHTML = Object.entries(colores).map(([, c]) =>
+      `<div class="legend-item"><span class="dot" style="background:${c.pin}"></span>${c.label}</div>`
+    ).join('');
+    return div;
+  };
+  legend.addTo(map);
+</script>
+
+</body>
+</html>
